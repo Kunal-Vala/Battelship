@@ -1,37 +1,33 @@
-import { createGameboard } from "../src/gameboard";
-import { createShip } from "../src/ship";
-
 const player = (isComputer = false) => {
     // This is the attack method for a human player.
     const humanAttack = (board, coord) => {
-        const [x, y] = coord;
-        return board.receiveAttack(x, y);
+        // FIX: Use clear variable names (row, col)
+        const [row, col] = coord;
+        return board.receiveAttack(row, col);
     };
 
     // This is the attack method for a computer player.
     const computerAttack = (board) => {
-        let x, y;
+        let row, col;
 
         // Keep generating random coordinates until an empty one is found.
         do {
-            x = getRandomInclusive(0, 9);
-            y = getRandomInclusive(0, 9);
-        } while (board.getBoard()[x][y] !== null); // Use getBoard() to check state
+            row = getRandomInclusive(0, 9);
+            col = getRandomInclusive(0, 9);
+        } while (board.getBoard()[row][col] !== null); // Use (row, col)
 
-        return board.receiveAttack(x, y);
+        return board.receiveAttack(row, col);
     };
 
-    // Return an object with a single `attack` method.
-    // The function assigned to `attack` depends on the `isComputer` flag.
     return {
         attack: isComputer ? computerAttack : humanAttack,
     };
 };
-
-export { player }
 
 function getRandomInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export { player };
